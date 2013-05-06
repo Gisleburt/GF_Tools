@@ -10,7 +10,7 @@
 
 			$class = ltrim($className, '\\');
 			$filename  = '';
-			$namespace = '';
+			//$namespace = '';
 			if ($lastNsPos = strripos($class, '\\')) {
 				$namespace = substr($class, 0, $lastNsPos);
 				$class = substr($class, $lastNsPos + 1);
@@ -20,7 +20,7 @@
 			
 			if(is_readable($filename)) {
 				require $filename;
-				return;
+				return true;
 			}
 			
 			foreach(self::$incDirs as $dir) {

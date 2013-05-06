@@ -18,7 +18,7 @@
 		
 		public static $errorFolder;
 		public static $errorEmail;
-		public static $devmode;
+		public static $devMode;
 		
 		protected static $errorDbServer;
 		protected static $errorDbUser;
@@ -50,7 +50,7 @@
 		
 		/**
 		 * Handles Exceptions
-		 * @param Exception $exception Either an exception or something derived from it.
+		 * @param \Exception $exception Either an exception or something derived from it.
 		 */
 		public static function handleException(\Exception $exception) {
 			//error_reporting(0);
@@ -67,13 +67,14 @@
 			
 			die;
 		}
-		
+
 		/**
 		 * Turns the error into a string for use in logging / emails
-		 * @param string $message
-		 * @param string $filename
-		 * @param int    $line
-		 * @param array  $context
+		 * @param $message string
+		 * @param $filename string
+		 * @param $line string
+		 * @param array $context
+		 * @return string
 		 */
 		protected static function formatErrorString($message, $filename, $line, array $context = null) {
 			$filename = self::cleanFilename($filename);
@@ -88,10 +89,10 @@
 			return  "{$date}\n\t{$info}\n\n";
 			
 		}
-		
+
 		/**
 		 * Formats an Exception into a string for use in log and email
-		 * @param Exception $exception
+		 * @param \Exception $exception
 		 * @return string
 		 */
 		protected static function formatExceptionString(\Exception $exception) {
@@ -115,12 +116,12 @@
 			return "{$date}\n\t{$info}\n\n";
 				
 		}
-		
-		
+
+
 		/**
 		 * Saves an exception to the log file
-		 * @param string $exception
-		 * @param bool True if the file was successfully written
+		 * @param $info string
+		 * @return bool
 		 */
 		protected static function saveToDisk($info) {
 			if(isset(self::$errorFolder)) {
@@ -133,13 +134,13 @@
 			}
 			return false;
 		}
-		
+
 		/**
-		 * Saves error to database if the correct settings are passed.
+		 * * Saves error to database if the correct settings are passed.
 		 * @param string $message
 		 * @param string $file
-		 * @param int $line
-		 * @return
+		 * @param integer $line
+		 * @return bool|resource
 		 */
 		protected static function saveToDB($message, $file, $line) {
 			if(self::$errorDbServer && self::$errorDbUser && self::$errorDbPass && self::$errorDbSchema && self::$errorDbTable) {
@@ -172,7 +173,7 @@
 		
 		
 		/**
-		 * Emails the error to a preset reciever (requires config)
+		 * Emails the error to a preset recipient (requires config)
 		 * @param string $info
 		 * 
 		 */
@@ -202,10 +203,11 @@
 				$filename = str_replace(APP_DIR, '', $filename);
 			return $filename;
 		}
-		
-		
+
+
 		/**
 		 * If a variable in the context is named in the error message, we can get that info
+		 * @param string $message
 		 * @param array $context
 		 * @return string
 		 */
@@ -234,15 +236,15 @@
 			if(isset($smarty) && !self::$fatal) {
 				
 				$smarty->assign('publicMessage', $publicMessage);
-				if(self::$devmode)
+				if(self::$devMode)
 					$smarty->assign('devMessage', $devMessage);
 				$smarty->display('system/error.tpl');
 
 			} else {
 				
-				echo "<p>An error has occured</p>\n";
+				echo "<p>An error has occurred</p>\n";
 				echo "<p>$publicMessage</p>\n";
-				if(self::$devmode)
+				if(self::$devMode)
 					echo "<p><b>Dev Message:</b></p><pre>$devMessage</pre>\n";
 				
 			}

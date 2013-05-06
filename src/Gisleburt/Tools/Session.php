@@ -34,33 +34,33 @@
 		}
 		
 		/**
-		 * Checks for the existance of the object in session, creates it if not found
+		 * Checks for the existence of the object in session, creates it if not found
 		 * @param string $namespace
-		 * @throws LazyData_Exception If another type of object exists in the given namespace 
-		 * @return DM_Session (or sub class of) If the object was created inside the session
+		 * @throws \Exception If another type of object exists in the given namespace
+		 * @return Session (or sub class of) If the object was created inside the session
 		 */
 		public static function getSession($namespace = null) {
 			
 			if(!session_id())
 				session_start();
 			
-			$classname = get_called_class();
+			$className = get_called_class();
 			
 			if(!$namespace)
-				$namespace = $classname;
+				$namespace = $className;
 			
 			// If it doesn't exist, create it and return it
 			if(!isset($_SESSION[$namespace])) {
-				$_SESSION[$namespace] = new $classname($namespace);
+				$_SESSION[$namespace] = new $className($namespace);
 				return $_SESSION[$namespace];
 			}
 			
 			// If it already exists check it's ok and return it
-			if(get_class($_SESSION[$namespace]) == $classname)
+			if(get_class($_SESSION[$namespace]) == $className)
 				return $_SESSION[$namespace];
 			
 			// If it's not ok throw an Exception.
-			throw new Exception('Object in session does not match requested object.');
+			throw new \Exception('Object in session does not match requested object.');
 		}
 		
 	}

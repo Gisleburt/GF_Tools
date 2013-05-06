@@ -31,7 +31,7 @@
 
 		/**
 		 * The parameters passed as get parameters in the uri
-		 * @var srting[]
+		 * @var string[]
 		 */
 		protected $getParameters;
 
@@ -59,7 +59,6 @@
 		
 		/**
 		 * Analyse a request to get the controller, action and any parameters
-		 * @param string $uri
 		 */
 		public function analyseRequest() {
 
@@ -139,20 +138,22 @@
 
 		/**
 		 * What controller was being requested
-		 * @return string
+		 * @return string|null
 		 */
 		public function getRequestedController() {
 			if(array_key_exists(0, $this->requestUri))
 				return $this->requestUri[0];
+			return null;
 		}
 
 		/**
 		 * What action was being requested
-		 * @return string
+		 * @return string|null
 		 */
 		public function getRequestedAction() {
 			if(array_key_exists(1, $this->requestUri))
 				return $this->requestUri[1];
+			return null;
 		}
 				
 	}

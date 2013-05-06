@@ -119,8 +119,8 @@
 				$message = wordwrap($this->message, 70, "\n\r");
 
 				try {
-				 	$sent = @mail($to, $subject, $message, $from); // Supressing errors for the lose. :(
-					if(!$sent) {}
+				 	$sent = @mail($to, $subject, $message, $from); // Suppressing errors for the lose. :(
+					if(!$sent)
 						throw new \Exception(error_get_last());
 					return true;
 				}

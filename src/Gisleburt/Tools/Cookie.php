@@ -68,6 +68,7 @@
 		/**
 		 * Attempts to retrieve information from the cookie, or if unavailable, from the object
 		 * @param string $name
+		 * @return mixed
 		 */
 		public function __get($name) {
 			if($name[0] != '_') {

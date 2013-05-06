@@ -8,20 +8,22 @@
 	 */
 
 	class Tools {
-		
+
 		/**
 		 * Returns the _GET value for the given key or null if not found
-		 * @param string $key
+		 * @param string|null $key
+		 * @return null|\stdClass
 		 */
 		public static function get($key = null) {
 			if(isset($key))
 				return isset($_GET[$key]) ? $_GET[$key] : null;
 			return self::arrayToObject($_GET);
 		}
-		
+
 		/**
 		 * Returns the _POST value for the given key or null if not found
-		 * @param string $key
+		 * @param null $key
+		 * @return null|\stdClass
 		 */
 		public static function post($key = null) {
 			if(isset($key))
@@ -59,14 +61,14 @@
 		/**
 		 * Turns an array such as [1, 2, 3, 4] into a keyed array of the form [1 => 2, 3 => 4]
 		 * @param array $array
-		 * @param bool $safemode Default false, set to true to prevent accidental overwrite of keyed array
+		 * @param bool $safeMode Default false, set to true to prevent accidental overwrite of keyed array
 		 * @return array
 		 */
-		public static function linearArrayToKeyedArray(array $array, $safemode = false) {
+		public static function linearArrayToKeyedArray(array $array, $safeMode = false) {
 
 			// If safemode, lets check we aren't already dealing with a keyed array.
 			// This is slow so avoid using it.
-			if($safemode)
+			if($safeMode)
 				foreach($array as $key => $value)
 					if(!is_numeric($key))
 						return $array;
