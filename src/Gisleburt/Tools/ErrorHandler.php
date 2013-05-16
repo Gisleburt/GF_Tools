@@ -25,8 +25,17 @@
 		protected static $errorDbPass;
 		protected static $errorDbSchema;
 		protected static $errorDbTable;
+
+		/**
+		 * @var \Gisleburt\Template\Template
+		 */
+		protected static $template;
 		
 		protected static $fatal = false;
+
+		public static function setTemplate(\Gisleburt\Template\Template $template) {
+			self::$template = $template;
+		}
 		
 		public static function handleShutdown() {
 			$error = error_get_last();
@@ -228,25 +237,26 @@
 		 * @param string $publicMessage Something to tell the user
 		 */
 		protected static function displayMessages($devMessage, $publicMessage = null) {
-			global $smarty;
+			if(self::$template instanceof \Gisleburt\Template\Template) {
 			
-			if(!isset($publicMessage))
-				$publicMessage = self::DEFAULT_MESSAGE;
-			
-			if(isset($smarty) && !self::$fatal) {
-				
-				$smarty->assign('publicMessage', $publicMessage);
-				if(self::$devMode)
-					$smarty->assign('devMessage', $devMessage);
-				$smarty->display('system/error.tpl');
+				if(!isset($publicMessage))
+					$publicMessage = self::DEFAULT_MESSAGE;
 
-			} else {
-				
-				echo "<p>An error has occurred</p>\n";
-				echo "<p>$publicMessage</p>\n";
-				if(self::$devMode)
-					echo "<p><b>Dev Message:</b></p><pre>$devMessage</pre>\n";
-				
+				if(isset(self::$template) && !self::$fatal) {
+
+					self::$template->assign('publicMessage', $publicMessage);
+					if(self::$devMode)
+						self::$template->assign('devMessage', $devMessage);
+					self::$template->display('system/error.tpl');
+
+				} else {
+
+					echo "<p>An error has occurred</p>\n";
+					echo "<p>$publicMessage</p>\n";
+					if(self::$devMode)
+						echo "<p><b>Dev Message:</b></p><pre>$devMessage</pre>\n";
+
+				}
 			}
 		}
 		
