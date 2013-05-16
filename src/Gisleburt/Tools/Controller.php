@@ -34,15 +34,8 @@
 		 */
 		protected $actionCalled;
 
-		/**
-		 * Global router object
-		 * @var Router
-		 */
-		protected $router;
 		
 		public function __construct(array $uriParameters = null) {
-			global $router;
-			$this->router = $router;
 			$this->view = new \stdClass();
 			$this->uriParameters = $uriParameters;
 			$controllerNameExploded = explode('\\', get_called_class());
