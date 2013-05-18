@@ -34,6 +34,11 @@
 		 */
 		protected $actionCalled;
 
+        /**
+         * @var \Gisleburt\Template\Template
+         */
+        protected static $template;
+
 		
 		public function __construct(array $uriParameters = null) {
 			$this->view = new \stdClass();
@@ -47,17 +52,14 @@
 		 */
 		protected function display($action) {
 
-			// Probably not the right way to do this
-			global $template;
-
 			// Get the template appropriate template
 			$templateFile = $this->getTemplate($action);
 
 			// Assign the view parameters to the template
-			$template->assign(get_object_vars($this->view));
+			self::$template->assign(get_object_vars($this->view));
 
 			// Display the template
-			$template->display($templateFile);
+			self::$template->display($templateFile);
 
 			exit;
 
@@ -130,5 +132,13 @@
 		protected function redirect($url) {
 			\header("location: $url");
 		}
-		
+
+        /**
+         * Set the template module for all Controllers
+         * @param \Gisleburt\Template\Template $template
+         */
+        public static function setTemplate(\Gisleburt\Template\Template $template) {
+            self::$template = $template;
+        }
+
 	}
