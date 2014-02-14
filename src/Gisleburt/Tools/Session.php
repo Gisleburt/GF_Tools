@@ -37,7 +37,7 @@
 		 * Checks for the existence of the object in session, creates it if not found
 		 * @param string $namespace
 		 * @throws \Exception If another type of object exists in the given namespace
-		 * @return Session (or sub class of) If the object was created inside the session
+		 * @return $this
 		 */
 		public static function getSession($namespace = null) {
 			
